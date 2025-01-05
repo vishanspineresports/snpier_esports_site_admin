@@ -1,0 +1,24 @@
+function doPost(e) {
+    const data = JSON.parse(e.postData.contents);
+    const name = data.name;
+
+    const sheet = SpreadsheetApp.openById('1-d-cL9JB5WnOekPB3qNoVD7A_3aIck4uFqlIAmx2NKo').getSheetByName('tournaments');
+    const rows = sheet.getDataRange().getValues();
+
+    let rowToDelete = -1;
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i][0] === name) {
+            rowToDelete = i + 1;
+            break;
+        }
+    }
+
+    if (rowToDelete !== -1) {
+        sheet.deleteRow(rowToDelete);
+        return ContentService.createTextOutput(JSON.stringify({ result: 'deleted' }))
+                              .setMimeType(ContentService.MimeType.JSON);
+    } else {
+        return ContentService.createTextOutput(JSON.stringify({ result: 'not_found' }))
+                              .setMimeType(ContentService.MimeType.JSON);
+    }
+}

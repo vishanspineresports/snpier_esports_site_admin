@@ -1,0 +1,15 @@
+function doPost(e) {
+    const tournamentData = JSON.parse(e.postData.contents);
+    const name = tournamentData.name;
+    const imageUrl = tournamentData.image;
+    const price = tournamentData.price;
+    const mode = tournamentData.mode;
+    const prize = tournamentData.prize;
+    const slot = tournamentData.slot;
+
+    const sheet = SpreadsheetApp.openById('1-d-cL9JB5WnOekPB3qNoVD7A_3aIck4uFqlIAmx2NKo').getSheetByName('tournaments');
+    sheet.appendRow([name, imageUrl, price, '', mode, prize, slot]);
+
+    return ContentService.createTextOutput(JSON.stringify({ result: 'success' }))
+                          .setMimeType(ContentService.MimeType.JSON);
+}
